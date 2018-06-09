@@ -14,9 +14,10 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 
 $token = '3XFMHJAASKX7JILMP6KQ';
-$url = file_get_contents('https://www.eventbriteapi.com/v3/events/'.$id.'/?token='.$token.'');
+$url = file_get_contents('https://www.eventbriteapi.com/v3/events/'.$id.'/?token='.$token.'&expand=venue');
 $kq = json_decode($url, true);
 extract($kq);
+
 ?>
 
 <div class="page-header" style='background-image: url(<?php echo $logo['original']['url'] ?>)'>
@@ -63,7 +64,11 @@ extract($kq);
                             </div>
                             <h3>Địa điểm</h3>
                             <div>
-                                <p><?php echo $venue['address']['country']; ?></p>
+                                <p><?php
+                                foreach($venue['address']['localized_multi_line_address_display'] as $add ){
+                                    echo $add.'<br/>';
+                                }
+                                 ?></p>
                             </div>
                             <h3>Nội dung</h3>
                             <p><?php echo $description['text'] ?></p>
